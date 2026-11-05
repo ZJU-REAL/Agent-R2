@@ -112,7 +112,7 @@ After preparing the data, run:
 
 ```bash
 cd Agent-R2/data_sythesis
-python run.py                       # scenario → search → question → solver
+python run.py                       # scenario → search → question → solver → refine
 python prepare_sft_data_split.py    # → data/sft.jsonl
 python prepare_rl_data.py           # → rl_data/data{N}.zip
 ```

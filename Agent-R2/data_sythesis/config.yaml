@@ -35,6 +35,12 @@ agents:
     max_steps: 40
     upload_skills: false
 
+  refine_agent:
+    family: "qwen"
+    model_id: "qwen3.7-max"
+    max_steps: 20
+    max_retry: 3
+
   eval_agent:
     family: "qwen"
     model_id: "qwen3.6-plus"
@@ -61,5 +67,6 @@ agent_run:
   search_agent: false
   question_agent: false
   solver_agent: true
+  refine_agent: false
   eval_agent: false
   max_tool_response_length: 4096  # tool 响应截断长度，0 表示不截断

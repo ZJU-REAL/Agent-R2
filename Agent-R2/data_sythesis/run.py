@@ -1,6 +1,6 @@
 """data-sythesis run.py -- 主入口，协调整个数据合成流程。
 
-流程: scenario_agent -> search_agent -> question_agent -> solver_agent
+流程: scenario_agent -> search_agent -> question_agent -> solver_agent -> refine_agent
 通过 run.py 运行时输出到 output 目录，单独运行各 agent 时输出到 test 目录。
 每个需要 sandbox 的 agent 在运行前会清空 sandbox。
 """
@@ -37,6 +37,7 @@ from agents.scenario_agent import run_scenario_agent, ScenarioAgentConfig
 from agents.search_agent import run_search_agent, SearchAgentConfig
 from agents.question_agent import run_question_agent, QuestionAgentConfig
 from agents.solver_agent import run_solver_agent, SolverAgentConfig
+from agents.refine_agent import run_refine_agent, RefineAgentConfig
 
 from rle_open_sdk.sdk import Environment
 from data_sythesis.sandbox.create import create_sessions
@@ -57,6 +58,7 @@ class AgentConfigs:
     search_agent: SearchAgentConfig
     question_agent: QuestionAgentConfig
     solver_agent: SolverAgentConfig
+    refine_agent: RefineAgentConfig
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any], defaults: Dict[str, Any]) -> "AgentConfigs":
@@ -112,6 +114,12 @@ class AgentConfigs:
                 model_id=_model_id("solver_agent"),
                 max_steps=_max_steps("solver_agent", 30),
                 upload_skills=_upload_skills("solver_agent"),
+            ),
+            refine_agent=RefineAgentConfig(
+                family=_family("refine_agent"),
+                model_id=_model_id("refine_agent"),
+                max_steps=_max_steps("refine_agent", 20),
+                max_retry=_max_retry("refine_agent"),
             ),
         )
 
@@ -175,10 +183,12 @@ def build_agent_steps(solver_prefix: str) -> List[Dict[str, Any]]:
         {"name": "search",   "result_file": "search_result.json",   "tmp_dir": "search_tmp"},
         {"name": "question", "result_file": "question_result.json", "tmp_dir": "question_tmp"},
         {"name": "solver",   "result_file": result_file,            "tmp_dir": tmp_dir},
+        {"name": "refine",   "result_file": "refine_result.json",   "tmp_dir": "refine_tmp"},
     ]
 
+
 # Agent 运行顺序（与 AGENT_STEPS 对应）
-AGENT_ORDER = ["scenario_agent", "search_agent", "question_agent", "solver_agent"]
+AGENT_ORDER = ["scenario_agent", "search_agent", "question_agent", "solver_agent", "refine_agent"]
 
 
 def get_enabled_agents(agent_run: dict) -> set:
@@ -215,7 +225,7 @@ async def process_one_sample(
 ) -> Dict[str, Any]:
     """处理单个样本的完整流程。
 
-    流程：scenario -> search -> question -> solver
+    流程：scenario -> search -> question -> solver -> refine
 
     各 agent 按需独立运行：仅当该 agent 在 enabled_agents 中、且对应结果文件不存在时才执行。
     每个需要 sandbox 的 agent 都会新建和销毁环境。
@@ -242,11 +252,13 @@ async def process_one_sample(
     _solver_result_name   = f"{solver_prefix}_solver_result.json" if solver_prefix else "solver_result.json"
     _solver_tmp_name      = f"{solver_prefix}_solver_tmp" if solver_prefix else "solver_tmp"
     solver_result_path    = sample_output_dir / _solver_result_name
+    refine_result_path    = sample_output_dir / "refine_result.json"
 
     scenario_data   = _load_result_json(scenario_result_path)
     search_result   = _load_result_json(search_result_path)
     question_result = _load_result_json(question_result_path)
     solver_result   = _load_result_json(solver_result_path)
+    refine_result   = _load_result_json(refine_result_path)
 
     # title 仅依赖输入数据，始终可计算
     title = map_discipline_to_title(discipline, discipline_to_title)
@@ -419,6 +431,49 @@ async def process_one_sample(
 
             save_output(solver_result, solver_result_path)
 
+        # ── Step 5: 核验与修订 ──
+        if "refine_agent" in enabled_agents and not refine_result_path.exists():
+            if not question_result:
+                raise RuntimeError(f"[Sample {sample_idx}] refine_agent 已启用但 question_result.json 不存在")
+            if not solver_result:
+                raise RuntimeError(f"[Sample {sample_idx}] refine_agent 已启用但 solver_result.json 不存在")
+
+            downloaded_input = question_result.get("downloaded_input", [])
+            input_dir = question_result.get("input_dir", "")
+            local_attachments = downloaded_input if downloaded_input else []
+            if not local_attachments and input_dir:
+                local_attachments = [input_dir]
+
+            session_id = await create_session_wrapper()
+            env = create_env()
+            try:
+                refine_result = await run_refine_agent(
+                    question_data=question_result,
+                    solver_result=solver_result,
+                    local_attachments=local_attachments,
+                    session_id=session_id,
+                    env=env,
+                    output_tmp_dir=str(sample_output_dir / "refine_tmp"),
+                    config=agent_configs.refine_agent,
+                    sk=sk,
+                    api_url=api_url,
+                    conversation_dir=conversation_dir,
+                )
+            finally:
+                await destroy_session_wrapper(session_id)
+                del env
+
+            if not refine_result:
+                result["status"] = "error"
+                result["error"] = "核验与修订失败"
+                return result
+
+            save_output(refine_result, refine_result_path)
+            if refine_result.get("rubric"):
+                question_result = dict(question_result)
+                question_result["rubric"] = refine_result["rubric"]
+                save_output(question_result, question_result_path)
+
         # ── 保存最终汇总 ──
         final_result = {
             "task_id": str(uuid.uuid4()),
@@ -438,7 +493,11 @@ async def process_one_sample(
             final_result["rubric"] = question_result.get("rubric", [])
             final_result["reference_file"] = question_result.get("reference_file", {})
         if solver_result is not None:
-            final_result["solver_output_file"] = solver_result.get("output_file", {})
+            final_result["solver_output_file"] = solver_result.get("output_files", solver_result.get("output_file", {}))
+        if refine_result is not None:
+            final_result["rubric"] = refine_result.get("rubric", final_result.get("rubric", []))
+            final_result["refine_output_file"] = refine_result.get("output_files", {})
+            final_result["deliverable_revised"] = refine_result.get("deliverable_revised", False)
         final_result["metadata"] = {"sample_idx": sample_idx}
         if search_result is not None:
             final_result["metadata"]["search_steps"] = search_result.get("steps")
@@ -446,6 +505,8 @@ async def process_one_sample(
             final_result["metadata"]["question_steps"] = question_result.get("steps")
         if solver_result is not None:
             final_result["metadata"]["solver_steps"] = solver_result.get("steps")
+        if refine_result is not None:
+            final_result["metadata"]["refine_steps"] = refine_result.get("steps")
 
         save_output(final_result, sample_output_dir / "final_result.json")
         result["status"] = "completed"
@@ -629,6 +690,7 @@ def main():
             "search_agent": agent_configs.search_agent.to_dict(),
             "question_agent": agent_configs.question_agent.to_dict(),
             "solver_agent": agent_configs.solver_agent.to_dict(),
+            "refine_agent": agent_configs.refine_agent.to_dict(),
         }
     }, summary_path)
     logger.info(f"汇总保存到: {summary_path}")
