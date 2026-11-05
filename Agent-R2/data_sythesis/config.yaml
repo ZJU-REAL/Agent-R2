@@ -1,0 +1,65 @@
+# data-synthesis 配置文件
+
+# LLM 网关 URL / key、沙盒 key 统一在 settings/settings.yaml 中配置
+
+vision_model:
+  family: "qwen"
+  model_id: "qwen3-vl-30b-a3b-thinking"
+
+# 各 Agent 的模型配置
+agents:
+  scenario_agent:
+    family: "qwen"
+    model_id: "qwen3.6-plus"
+    max_retry: 3
+
+  search_agent:
+    family: "qwen"
+    model_id: "qwen3.6-plus"
+    max_steps: 20
+    max_retry: 3
+    only_high_relevant_files: true
+
+  question_agent:
+    family: "qwen"
+    model_id: "qwen3.6-plus"
+    max_steps: 40
+    only_raw_files: false
+    soffice: true
+    preprocess_timeout: 120  # 单个文件预处理超时秒数，超时则跳过
+    max_retry: 3
+
+  solver_agent:
+    family: "qwen"
+    model_id: "qwen3.7-max"
+    max_steps: 40
+    upload_skills: false
+
+  eval_agent:
+    family: "qwen"
+    model_id: "qwen3.6-plus"
+    max_steps: 10
+
+# 运行配置
+run:
+  concurrency: 20
+  output_dir: "output"
+  begin: null  # 起始样本索引（含），null 表示从头开始
+  end: null    # 结束样本索引（不含），null 表示处理全部
+
+# 文件搜索配置
+file_search:
+  sandbox_base_dir: "/home/workspace/search_files"
+  num: 1
+  search_mode: "async"  # "async" 异步并发 | "sync" 同步顺序
+  size_limit: 2
+  page_limit: 40
+  top: 2
+
+agent_run:
+  scenario_agent: false
+  search_agent: false
+  question_agent: false
+  solver_agent: true
+  eval_agent: false
+  max_tool_response_length: 4096  # tool 响应截断长度，0 表示不截断

@@ -1,0 +1,52 @@
+# gdpval benchmark 评估配置
+
+# LLM 网关 URL / key、沙盒 key 统一在 settings/settings.yaml 中配置
+
+# 全局默认模型配置
+vision_model:
+  family: "qwen"
+  model_id: "qwen3.6-plus"
+  ports: []
+
+# Solver Agent 配置
+solver:
+  family: "vllm"
+  model_id: "Qwen3-4B-Thinking-2507-claude-ckpt598"
+  external_vision: true  # false=view_image_multimodal(直接返回图片base64), true=view_image_text(调用vision_model转文字)
+  ports: [8000]  # vLLM 部署端口，自动拼接 http://localhost:{port}/v1
+  max_steps: 100
+  upload_skills: false
+
+# Evaluator Agent 配置
+evaluator:
+  family: "gemini"
+  model_id: "gemini-3.1-pro-preview"
+  external_vision: false  # false=view_image_multimodal(直接返回图片base64), true=view_image_text(调用vision_model转文字)
+  ports: []              # vLLM 部署端口，为空则使用全局 api.url
+  max_steps: 100
+  upload_skills: false
+
+# 运行配置
+run:
+  limit: 220          # 评估任务数量，-1 表示全部
+  concurrency: 5     # 并发数
+  output_dir: "results"
+
+# 数据配置
+data:
+  path: "data/train-00000-of-00001.json"
+  base_dir: "."      # reference_files 和 deliverable_files 的根目录
+
+# 沙盒配置
+sandbox:
+  image: "rle/aio-sandbox:origin-260312"
+  timeout: 1800
+  session_timeout: 10080
+  path: "gdpval/sandbox/Qwen3-4B/sandbox_sessions"
+
+agent_run:
+  solver: false             # false = 跳过 Solver
+  evaluator: true           # false = 跳过 Evaluator
+  max_tool_response_length: 4096  # tool 响应截断长度，0 表示不截断
+  summary: false            # 是否开启上下文压缩：达到 summary_token_threshold 时让模型总结进度并清空上下文
+  summary_token_threshold: 128000  # token 阈值，超过此值触发 summary（基于 vLLM 返回的 prompt_tokens）

@@ -1,0 +1,32 @@
+# Agent-R2 全局配置：URL / key / 代理只在这里填一次，所有模块（数据合成、评测、verl RL）共用。
+
+# OpenAI 兼容的 LLM 网关（合成 agent、视觉工具、评测 LLM judge、API 模型 solver）
+llm_api_url: ""
+llm_api_key: ""
+
+# RL reward judge 的 OpenAI 兼容地址（例如单独部署的 vLLM：http://localhost:8001/v1）；留空则使用上面的 llm_api_url / llm_api_key
+reward_judge_api_url: ""
+reward_judge_api_key: ""
+
+# 沙盒服务 key
+sandbox_api_key: ""
+
+# Serper（web_search* / web_fetch）
+serper_api_key: ""
+
+# HTTP 代理：未设置 https_proxy / http_proxy 环境变量时使用，留空表示不走代理
+proxy: ""
+
+# 数据集中 input_dir / sample_dir 等路径的前缀改写，数据在别的机器上生成时使用：[[旧前缀, 新前缀], ...]
+path_rewrites: []
+
+# 以下仅可选的 image_gen 工具使用
+image_gen:
+  url: ""
+  ak: ""
+  sk: ""
+  appid: ""
+file_server:
+  url: ""
+  ak: ""
+  sk: ""

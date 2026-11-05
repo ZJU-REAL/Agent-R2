@@ -1,0 +1,43 @@
+# officeqa benchmark 评估配置
+
+# LLM 网关 URL / key、沙盒 key 统一在 settings/settings.yaml 中配置
+
+# 全局默认模型配置
+defaults:
+  family: "qwen"
+  model_id: "qwen3.6-plus"
+
+# Solver Agent 配置
+solver:
+  family: "qwen"
+  model_id: "qwen3-235b-a22b-thinking-2507"
+  ports: []
+  max_steps: 100
+
+# 运行配置
+run:
+  start: 0
+  end: 246
+  concurrency: 16
+  output_dir: "results"
+
+# 数据配置（相对路径基于 officeqa/ 目录）
+data:
+  path: "data/officeqa_full.csv"
+  docs_base: "data/treasury_bulletins_parsed/transformed"
+
+# 沙盒配置
+sandbox:
+  image: "rle/aio-sandbox:terminal-0.0.1"
+  timeout: 1800
+  session_timeout: 10080
+  path: "officeqa/sandbox/sandbox_sessions"
+
+agent_run:
+  solver: true
+  max_tool_response_length: 16384
+
+# Evaluator 配置（LLM-as-judge）
+evaluator:
+  family: "qwen"
+  model_id: "qwen3.6-plus"

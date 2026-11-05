@@ -1,0 +1,5 @@
+- name: "real_agent"
+  _target_: "recipe.agent_r2.real_agent_loop.RealAgentLoop"
+
+- name: "real_agent_split"
+  _target_: "recipe.agent_r2.split.real_agent_loop_split.RealAgentLoopSplit"

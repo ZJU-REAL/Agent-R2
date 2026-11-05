@@ -1,0 +1,71 @@
+tools:
+  - class_name: "recipe.agent_r2.tools.terminal_tool.SandboxTerminalTool"
+    config:
+      type: native
+      timeout: 60.0
+    tool_schema:
+      type: "function"
+      function:
+        name: "terminal"
+        description: "Executes a given bash command in a persistent shell session inside the sandbox. Use this tool to run scripts, inspect files, install packages, etc."
+        parameters:
+          type: "object"
+          properties:
+            command:
+              type: "string"
+              description: "The bash command to execute."
+          required: ["command"]
+
+  - class_name: "recipe.agent_r2.tools.web_search_tool.WebSearchTool"
+    config:
+      type: native
+    tool_schema:
+      type: "function"
+      function:
+        name: "web_search"
+        description: "Search the web for information. Returns text snippets from search results."
+        parameters:
+          type: "object"
+          properties:
+            query:
+              type: "string"
+              description: "Search query."
+          required: ["query"]
+
+  - class_name: "recipe.agent_r2.tools.web_fetch_tool.WebFetchTool"
+    config:
+      type: native
+    tool_schema:
+      type: "function"
+      function:
+        name: "web_fetch"
+        description: "Read a web page and return its title and content."
+        parameters:
+          type: "object"
+          properties:
+            url:
+              type: "string"
+              description: "URL of the web page to read."
+          required: ["url"]
+
+  - class_name: "recipe.agent_r2.tools.view_image_text_tool.ViewImageTextTool"
+    config:
+      type: native
+      # LLM configuration for vision model
+      llm_family: "qwen"
+      llm_model_id: "qwen3-vl-30b-a3b-thinking"
+    tool_schema:
+      type: "function"
+      function:
+        name: "view_image_text"
+        description: "Understand an image using AI vision. Pass a query and a sandbox image path. Returns a text description of the image."
+        parameters:
+          type: "object"
+          properties:
+            query:
+              type: "string"
+              description: "What you want to understand about the image."
+            image_path:
+              type: "string"
+              description: "Image path in sandbox (e.g., /mnt/user-data/uploads/image.png)."
+          required: ["query", "image_path"]
