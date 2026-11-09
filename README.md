@@ -18,6 +18,8 @@ Preprint.<br>
 </p>
 
 <p align="center">
+<a href="https://arxiv.org/abs/2611.08219">📄 arXiv</a>
+&nbsp;|&nbsp;
 <a href="https://huggingface.co/teng-pan/Agent-R2-4B">🤗 Agent-R2-4B</a>
 </p>
 
