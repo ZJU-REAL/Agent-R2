@@ -100,7 +100,6 @@ Seed data lives in `Agent-R2/data_sythesis/seed_task/`. These files are included
 - `Task Statements.xlsx`: occupational activity seeds, columns `Title`, `Task`
 - `discipline_to_title.json`: `{discipline: Title}` for the disciplines used in synthesis
 - `disciplines.json`, `title_categories.json`: full discipline and occupation lists
-- `download.py`: samples web-corpus documents from the Hugging Face dataset [Attention1115/DLR-Web](https://huggingface.co/datasets/Attention1115/DLR-Web)
 
 Download the web-corpus data for `sample.jsonl` from [Attention1115/DLR-Web](https://huggingface.co/datasets/Attention1115/DLR-Web):
 
