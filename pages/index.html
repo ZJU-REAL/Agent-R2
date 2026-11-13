@@ -16,11 +16,11 @@
       href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"
       rel="stylesheet"
     />
-    <link href="style.css?v=20261114c" rel="stylesheet" />
+    <link href="style.css?v=20261114f" rel="stylesheet" />
     <script>
       document.documentElement.classList.add("ar-js");
     </script>
-    <script defer src="script.js?v=20261114c"></script>
+    <script defer src="script.js?v=20261114f"></script>
   </head>
   <body>
     <a class="ar-skip" href="#main">Skip to content</a>
@@ -76,25 +76,36 @@
           </div>
 
           <!-- One task instance, laid out as a document on the desk (example from paper Fig. 2) -->
-          <aside class="ar-hero-desk" aria-label="A synthesized task: an instruction, three real web files and a deliverable rubric">
-            <div class="ar-htask">
-              <div class="ar-htask-head">
-                <span class="ar-htask-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16v12H4z" /><path d="M9 7V5h6v2" /></svg></span>
-                <span><b>New task</b><small>legal memorandum · election contest</small></span>
+          <aside class="ar-hero-desk ar-tw-wrap" aria-label="A synthesized Agent-R2 task: instruction, real web attachments and a deliverable rubric">
+            <div class="ar-tw">
+              <div class="ar-tw-bar"><i></i><i></i><i></i><span>Task · Lawyers · seed: examine legal data</span></div>
+              <div class="ar-tw-body">
+                <p class="ar-tw-subj">Election contest memorandum</p>
+                <p class="ar-tw-text">Your client lost a Virginia General Assembly election by <mark>0.8%</mark> of the vote.</p>
+                <p class="ar-tw-text"><b>Prepare a comprehensive legal memorandum analyzing the viability of an election contest and developing a litigation strategy.</b></p>
+                <p class="ar-tw-k">3 attachments · real web files</p>
+                <div class="ar-att">
+                  <figure class="ar-att-f">
+                    <div class="ar-pg ar-pg-pdf"><b>Recounts and Contests</b><small>Virginia Department of Elections</small><p>A petition for a recount may be filed only if there is a difference of not more than one percent (1%) of the total vote cast…</p><span></span><span></span><span class="s"></span></div>
+                    <figcaption title="15_Recounts_and_Contests_2024_FINAL.pdf"><span class="ar-chip ar-chip-pdf">PDF</span>15_Recounts_and_Contests_2024_FINAL.pdf</figcaption>
+                  </figure>
+                  <figure class="ar-att-f">
+                    <div class="ar-pg ar-pg-docx"><b>Voting Factsheet</b><small>2022 · DPS</small><ul><li>Who can vote</li><li>Registering to vote</li><li>Voting by mail</li></ul><span></span><span class="s"></span></div>
+                    <figcaption title="2022-DPS-Factsheets-Voting.docx"><span class="ar-chip ar-chip-docx">DOCX</span>2022-DPS-Factsheets-Voting.docx</figcaption>
+                  </figure>
+                  <figure class="ar-att-f">
+                    <div class="ar-pg ar-pg-xlsx"><table><tr><th>Var</th><th>Question</th><th>Values</th></tr><tr><td>Q1</td><td>Voted in 2024</td><td>1–2</td></tr><tr><td>Q2</td><td>Mail ballot</td><td>1–2</td></tr><tr><td>Q3</td><td>Trust count</td><td>1–5</td></tr><tr><td>Q4</td><td>Party</td><td>1–4</td></tr><tr><td>Q5</td><td>Age group</td><td>1–6</td></tr></table></div>
+                    <figcaption title="2024_Policy_Survey_Codebook.xlsx"><span class="ar-chip ar-chip-xlsx">XLSX</span>2024_Policy_Survey_Codebook.xlsx</figcaption>
+                  </figure>
+                </div>
               </div>
-              <span class="ar-hbar" style="--w: 92%"></span><span class="ar-hbar" style="--w: 76%"></span>
             </div>
-            <div class="ar-hdocs" aria-label="Attachments: a PDF report, a Word factsheet and an Excel codebook">
-              <figure class="ar-hdoc ar-hdoc-1"><img alt="" height="160" src="assets/docs/pdf.jpg" width="120" /><span class="ar-chip ar-chip-pdf">PDF</span></figure>
-              <figure class="ar-hdoc ar-hdoc-2"><img alt="" height="160" src="assets/docs/docx.jpg" width="120" /><span class="ar-chip ar-chip-docx">DOCX</span></figure>
-              <figure class="ar-hdoc ar-hdoc-3"><img alt="" height="160" src="assets/docs/xlsx.jpg" width="120" /><span class="ar-chip ar-chip-xlsx">XLSX</span></figure>
-            </div>
-            <div class="ar-hcheck">
-              <p><b>Rubric</b><small>deliverable level</small></p>
+            <div class="ar-rub2">
+              <p class="ar-rub2-h"><b>Rubric</b><span>3 of 15 criteria</span></p>
               <ul>
-                <li><i aria-hidden="true">✓</i><span class="ar-hbar" style="--w: 88%"></span></li>
-                <li><i aria-hidden="true">✓</i><span class="ar-hbar" style="--w: 70%"></span></li>
-                <li class="is-open"><i aria-hidden="true"></i><span class="ar-hbar" style="--w: 80%"></span></li>
+                <li><i aria-hidden="true">✓</i><span>0.8% margin is within the 1% recount threshold</span><em>content</em></li>
+                <li><i aria-hidden="true">✓</i><span>10-day filing deadline after certification</span><em>content</em></li>
+                <li class="is-open"><i aria-hidden="true"></i><span>Cites the Virginia Code and Bost precisely</span><em>form</em></li>
               </ul>
             </div>
           </aside>
