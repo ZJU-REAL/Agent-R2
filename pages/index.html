@@ -16,11 +16,11 @@
       href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"
       rel="stylesheet"
     />
-    <link href="style.css?v=20261114b" rel="stylesheet" />
+    <link href="style.css?v=20261114c" rel="stylesheet" />
     <script>
       document.documentElement.classList.add("ar-js");
     </script>
-    <script defer src="script.js?v=20261114b"></script>
+    <script defer src="script.js?v=20261114c"></script>
   </head>
   <body>
     <a class="ar-skip" href="#main">Skip to content</a>
@@ -44,11 +44,6 @@
       <header class="ar-hero" id="top">
         <div class="ar-wrap ar-hero-grid">
           <div class="ar-hero-text">
-            <p class="ar-kicker">
-              <span class="ar-chip ar-chip-pdf">PDF</span><span class="ar-chip ar-chip-docx">DOCX</span
-              ><span class="ar-chip ar-chip-xlsx">XLSX</span><span class="ar-chip ar-chip-pptx">PPTX</span>
-              <span class="ar-kicker-text">Preprint · arXiv 2611.08219</span>
-            </p>
             <h1 class="ar-title">
               <img alt="Agent-R²" class="ar-wordmark" height="122" src="assets/title.png" width="460" />
               <span class="ar-subtitle">Scaling Agents for Realistic Productivity Work via Real-Source Data Synthesis</span>
@@ -81,26 +76,26 @@
           </div>
 
           <!-- One task instance, laid out as a document on the desk (example from paper Fig. 2) -->
-          <aside class="ar-hero-desk" aria-label="Example synthesized task instance">
-            <div class="ar-sheet ar-sheet-back" aria-hidden="true"></div>
-            <div class="ar-sheet ar-hero-sheet">
-              <p class="ar-sheet-label">task instance · x = (I, F<sub>a</sub>, F<sub>r</sub>, R)</p>
-              <p class="ar-hero-inst">
-                “…(Background)… Prepare a comprehensive legal memorandum analyzing the viability of an election contest and
-                developing a litigation strategy. …(Details)”
-              </p>
-              <p class="ar-sheet-label">attachments · real web files</p>
-              <ul class="ar-hero-files">
-                <li><span class="ar-chip ar-chip-pdf">PDF</span><span class="ar-fname">15_Recounts_and_Contests_2024_FINAL.pdf</span></li>
-                <li><span class="ar-chip ar-chip-docx">DOCX</span><span class="ar-fname">2022-DPS-Factsheets-Voting.docx</span></li>
-                <li><span class="ar-chip ar-chip-xlsx">XLSX</span><span class="ar-fname">2024_Policy_Survey_Codebook.xlsx</span></li>
+          <aside class="ar-hero-desk" aria-label="A synthesized task: an instruction, three real web files and a deliverable rubric">
+            <div class="ar-htask">
+              <div class="ar-htask-head">
+                <span class="ar-htask-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16v12H4z" /><path d="M9 7V5h6v2" /></svg></span>
+                <span><b>New task</b><small>legal memorandum · election contest</small></span>
+              </div>
+              <span class="ar-hbar" style="--w: 92%"></span><span class="ar-hbar" style="--w: 76%"></span>
+            </div>
+            <div class="ar-hdocs" aria-label="Attachments: a PDF report, a Word factsheet and an Excel codebook">
+              <figure class="ar-hdoc ar-hdoc-1"><img alt="" height="160" src="assets/docs/pdf.jpg" width="120" /><span class="ar-chip ar-chip-pdf">PDF</span></figure>
+              <figure class="ar-hdoc ar-hdoc-2"><img alt="" height="160" src="assets/docs/docx.jpg" width="120" /><span class="ar-chip ar-chip-docx">DOCX</span></figure>
+              <figure class="ar-hdoc ar-hdoc-3"><img alt="" height="160" src="assets/docs/xlsx.jpg" width="120" /><span class="ar-chip ar-chip-xlsx">XLSX</span></figure>
+            </div>
+            <div class="ar-hcheck">
+              <p><b>Rubric</b><small>deliverable level</small></p>
+              <ul>
+                <li><i aria-hidden="true">✓</i><span class="ar-hbar" style="--w: 88%"></span></li>
+                <li><i aria-hidden="true">✓</i><span class="ar-hbar" style="--w: 70%"></span></li>
+                <li class="is-open"><i aria-hidden="true"></i><span class="ar-hbar" style="--w: 80%"></span></li>
               </ul>
-              <p class="ar-sheet-label">rubric · deliverable level</p>
-              <p class="ar-hero-rubric">
-                <span class="ar-box" aria-hidden="true"></span>Correctly identifies that a recount petition is permissible because the
-                0.8% margin is within the 1% threshold specified in Virginia law
-              </p>
-              <p class="ar-hero-cap">Example instance from the paper’s pipeline figure.</p>
             </div>
           </aside>
         </div>

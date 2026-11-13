@@ -1710,3 +1710,33 @@ sup {
   height: auto;
   margin: 0 0 14px;
 }
+
+/* ---------------- hero task card: instruction, real files, rubric ---------------- */
+.ar-hero-desk { display: grid; gap: 14px; padding: 6px 0 10px; }
+.ar-htask, .ar-hcheck { background: var(--paper); border-radius: var(--r); box-shadow: var(--shadow); padding: 14px 16px; }
+.ar-htask-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ar-htask-head b { display: block; font-size: 14px; color: var(--ink); }
+.ar-htask-head small { display: block; font-size: 12.5px; color: var(--muted); }
+.ar-htask-ic { width: 32px; height: 32px; border-radius: 9px; background: #edf1f7; display: grid; place-items: center; flex: none; }
+.ar-htask-ic svg { width: 18px; height: 18px; fill: none; stroke: var(--docx); stroke-width: 1.8; stroke-linejoin: round; }
+.ar-hbar { display: block; width: var(--w); height: 7px; border-radius: 4px; background: #e7e5e0; }
+.ar-htask .ar-hbar + .ar-hbar { margin-top: 7px; }
+.ar-hdocs { position: relative; height: 196px; }
+.ar-hdoc { position: absolute; top: 14px; margin: 0; width: 120px; background: #fff; border-radius: 6px; box-shadow: var(--shadow-lift); }
+.ar-hdoc img { display: block; width: 120px; height: 160px; object-fit: cover; object-position: top; border-radius: 6px; }
+.ar-hdoc .ar-chip { position: absolute; left: 8px; bottom: 8px; }
+.ar-hdoc-1 { left: 6%; transform: rotate(-5deg); }
+.ar-hdoc-2 { left: 34%; top: 2px; transform: rotate(1deg); z-index: 1; }
+.ar-hdoc-3 { left: 62%; transform: rotate(5deg); }
+.ar-hcheck p { margin: 0 0 8px; display: flex; align-items: baseline; gap: 8px; }
+.ar-hcheck p b { font-size: 14px; color: var(--ink); }
+.ar-hcheck p small { font-size: 12.5px; color: var(--muted); }
+.ar-hcheck ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ar-hcheck li { display: flex; align-items: center; gap: 10px; }
+.ar-hcheck li i { width: 18px; height: 18px; flex: none; border-radius: 5px; display: grid; place-items: center; font: 700 12px/1 var(--sans, sans-serif); font-style: normal; color: #fff; background: var(--xlsx); }
+.ar-hcheck li.is-open i { background: #fff; border: 1.5px solid #c9c6c0; }
+@media (max-width: 480px) {
+  .ar-hdoc, .ar-hdoc img { width: 96px; }
+  .ar-hdoc img { height: 128px; }
+  .ar-hdocs { height: 160px; }
+}
