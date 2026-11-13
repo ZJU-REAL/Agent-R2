@@ -31,7 +31,7 @@ Preprint.<br>
 <p align="center">
   <a href="https://arxiv.org/abs/2611.08219"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2611.08219-b31b1b?style=flat-square"></a>
   <a href="https://zjureal.com/Agent-R2/"><img alt="Project" src="https://img.shields.io/badge/Project-Page-2B579A?style=flat-square"></a>
-  <a href="https://huggingface.co/teng-pan/Agent-R2-4B"><img alt="🤗%20Model" src="https://img.shields.io/badge/🤗%20Model-Agent--R2--4B-FFD21E?style=flat-square"></a>
+  <a href="https://huggingface.co/teng-pan/Agent-R2-4B"><img alt="Hugging Face Model" src="https://img.shields.io/badge/🤗%20Model-Agent--R2--4B-FFD21E?style=flat-square"></a>
 </p>
 
 <p align="center">
