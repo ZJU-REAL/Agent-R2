@@ -1,4 +1,15 @@
-<h1 align="center">Agent-R<sup>2</sup>: Scaling Agents for Realistic Productivity Work via Real-Source Data Synthesis</h1>
+<div align="center">
+
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/title-dark.png">
+    <img src="assets/title.png" alt="Agent-R2" width="360">
+  </picture>
+</h1>
+
+### Scaling Agents for Realistic Productivity Work via Real-Source Data Synthesis
+
+</div>
 
 <p align="center">
 Teng Pan<sup>1,2</sup>, &nbsp;
@@ -18,12 +29,28 @@ Preprint.<br>
 </p>
 
 <p align="center">
-<a href="https://arxiv.org/abs/2611.08219">📄 arXiv</a>
-&nbsp;|&nbsp;
-<a href="https://huggingface.co/teng-pan/Agent-R2-4B">🤗 Agent-R2-4B</a>
+  <a href="https://arxiv.org/abs/2611.08219"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2611.08219-b31b1b?style=flat-square"></a>
+  <a href="https://zjureal.com/Agent-R2/"><img alt="Project" src="https://img.shields.io/badge/Project-Page-2B579A?style=flat-square"></a>
+  <a href="https://huggingface.co/teng-pan/Agent-R2-4B"><img alt="🤗%20Model" src="https://img.shields.io/badge/🤗%20Model-Agent--R2--4B-FFD21E?style=flat-square"></a>
 </p>
 
-## Introduction
+<p align="center">
+  <img src="assets/hero.jpg" alt="Agent-R2: a curator robot turns genuine documents into a task folder with a checklist, a learning assistant robot does the work, and a reviewer checks the finished report against the checklist" width="100%">
+</p>
+
+<p align="center">
+  <a href="#overview">Overview</a> ·
+  <a href="#news">News</a> ·
+  <a href="#results">Results</a> ·
+  <a href="#data-synthesis">Data Synthesis</a> ·
+  <a href="#rl">RL</a> ·
+  <a href="#evaluation">Evaluation</a> ·
+  <a href="#citation">Citation</a>
+</p>
+
+<a id="overview"></a>
+
+## 🔎 Overview
 
 Current LLM agents still struggle with realistic productivity work, which requires following long-horizon professional workflows, understanding heterogeneous files, and producing usable deliverables, largely because scalable post-training data that reflects real work is lacking. We introduce Agent-R<sup>2</sup>, a **r**eal-source data synthesis framework for **r**ealistic productivity work. Instead of manually specified workflows or LLM-generated files, Agent-R<sup>2</sup> grounds synthesis in real occupational seeds, corpus-derived workflow evidence, and authentic web-sourced files, distilling 4k task instances with real multi-format attachments and deliverable-level rubrics from 10k web-corpus candidates. Trained on this data with SFT and rubric-based RL, Agent-R<sup>2</sup>-4B surpasses Qwen3-235B-A22B-Thinking-2507 on GDPval (51.0% vs. 48.0%) and OfficeQA (14.8% vs. 13.8%), and mitigates *shortcut behavior* while promoting sustained exploration.
 
@@ -35,7 +62,16 @@ Current LLM agents still struggle with realistic productivity work, which requir
 
 ![Agent-R2 rubric-based RL training framework](docs/training_framework.png)
 
-### Main results on GDPval
+<a id="news"></a>
+
+## 📰 News
+
+- **Nov 2026** — Project page released: <https://zjureal.com/Agent-R2/>.
+- **Nov 2026** — Paper released on [arXiv](https://arxiv.org/abs/2611.08219); model [Agent-R2-4B](https://huggingface.co/teng-pan/Agent-R2-4B) on Hugging Face.
+
+<a id="results"></a>
+
+## 📊 Main Results on GDPval
 
 | Model | Office Pass@1 | Office Pass@3 | Non-Office Pass@1 | Non-Office Pass@3 | Full Pass@1 | Full Pass@3 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -56,7 +92,9 @@ Current LLM agents still struggle with realistic productivity work, which requir
 
 Pass@k allows up to k attempts and scores the first attempt that produces a deliverable; results are reported for office, non-office and full subsets.
 
-### Repository structure
+<a id="repository-layout"></a>
+
+## 🗂️ Repository Structure
 
 ```
 Agent-R2/
@@ -74,7 +112,9 @@ Agent-R2/
     └── recipe/agent_r2/      # Agent-R2 multi-turn GRPO recipe
 ```
 
-## Preparation
+<a id="preparation"></a>
+
+## 🛠️ Preparation
 
 ### APIs and keys
 
@@ -93,7 +133,9 @@ Model choices stay in each module's `config.yaml` (`family` / `model_id` of the 
 
 Agents run code inside isolated sandbox sessions, one session per trajectory. Our experiments use Baidu's internal sandbox infrastructure, whose service key is read from `sandbox_api_key` in `settings.yaml`. [AIO Sandbox](https://github.com/agent-infra/sandbox) can be used as an alternative sandbox implementation.
 
-## Data Synthesis
+<a id="data-synthesis"></a>
+
+## 🧪 Data Synthesis
 
 Seed data lives in `Agent-R2/data_sythesis/seed_task/`. These files are included:
 
@@ -120,7 +162,9 @@ python prepare_rl_data.py           # → rl_data/data{N}.zip
 
 Each sample is written to `output/sample_{idx}/` (scenario, searched attachments, instruction + rubric, solver trajectory). Which agents run is controlled by `agent_run.*` in `config.yaml`; each step is skipped if its result file already exists, so reruns resume.
 
-## SFT
+<a id="sft"></a>
+
+## 🏋️ SFT
 
 `prepare_sft_data_split.py` writes one sample per assistant turn in ms-swift format: `{"tools": "<json string>", "messages": [...]}` with roles `system/user/assistant/tool_response`; only the last turn has `loss: true`. `run_qwen3.sh` reads it from `Agent-R2/data_sythesis/data/sft.jsonl`:
 
@@ -130,7 +174,9 @@ cd ms-swift && MODEL_PATH=/path/to/Qwen3-4B-Thinking-2507 bash run_qwen3.sh   # 
 
 The checkpoint is written to `ms-swift/output/`.
 
-## RL
+<a id="rl"></a>
+
+## 🎯 RL
 
 1. Put your `train.parquet` / `test.parquet` in the empty placeholder `Agent-R2/data_sythesis/output/` (keep the `output/sample_*` tree next to them). One row per task:
 
@@ -154,7 +200,9 @@ The checkpoint is written to `ms-swift/output/`.
 
    The reward is computed by an MLLM judge (`reward_config` in `recipe/agent_r2/config/ppo_trainer_real.yaml`) scoring the rendered deliverables against the rubric.
 
-## Evaluation
+<a id="evaluation"></a>
+
+## 📏 Evaluation
 
 | Benchmark | Data placeholder | Contents |
 |---|---|---|
@@ -171,6 +219,23 @@ python officeqa/run.py
 
 Results go to `<module>/results/<solver.model_id>/<task_id>/` and `summary.json`; finished tasks are skipped on rerun.
 
-## Acknowledgement
+<a id="citation"></a>
+
+## 📝 Citation
+
+If you find Agent-R2 useful, please cite:
+
+```bibtex
+@article{pan2026agentr2,
+  title   = {Agent-R$^2$: Scaling Agents for Realistic Productivity Work via Real-Source Data Synthesis},
+  author  = {Pan, Teng and Wang, Zixuan and Yan, Yuchen and Wu, Qifei and Chen, Yao and Qu, Yingqi and Zhang, Ruiqing and Shen, Yongliang},
+  journal = {arXiv preprint arXiv:2611.08219},
+  year    = {2026}
+}
+```
+
+<a id="acknowledgement"></a>
+
+## 🙏 Acknowledgement
 
 This project is trained with [ms-swift](https://github.com/modelscope/ms-swift) and [verl](https://github.com/volcengine/verl). Part of the data we use comes from [DESIGNER](https://arxiv.org/abs/2508.12726).

@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Agent-R² | Scaling Agents for Realistic Productivity Work via Real-Source Data Synthesis</title>
+    <meta
+      content="Agent-R² grounds agent training data in real occupational seeds, corpus-derived workflows and authentic web files, distilling 4k productivity tasks with deliverable-level rubrics. Agent-R²-4B surpasses Qwen3-235B-A22B-Thinking-2507 on GDPval and OfficeQA."
+      name="description"
+    />
+    <meta content="#eeece8" name="theme-color" />
+    <link href="assets/favicon.svg" rel="icon" type="image/svg+xml" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="style.css?v=20261114b" rel="stylesheet" />
+    <script>
+      document.documentElement.classList.add("ar-js");
+    </script>
+    <script defer src="script.js?v=20261114b"></script>
+  </head>
+  <body>
+    <a class="ar-skip" href="#main">Skip to content</a>
+
+    <!-- ================================ Top bar ================================ -->
+    <div class="ar-topbar">
+      <div class="ar-wrap ar-topbar-in">
+        <a class="ar-brand" href="#top">Agent-R<sup>2</sup></a>
+        <nav class="ar-nav" aria-label="Sections">
+          <a href="#method">Method</a>
+          <a href="#results">Results</a>
+          <a href="#analysis">Analysis</a>
+          <a href="#start">Quick start</a>
+          <a href="#cite">BibTeX</a>
+        </nav>
+      </div>
+    </div>
+
+    <main id="main">
+      <!-- ================================= Hero ================================= -->
+      <header class="ar-hero" id="top">
+        <div class="ar-wrap ar-hero-grid">
+          <div class="ar-hero-text">
+            <p class="ar-kicker">
+              <span class="ar-chip ar-chip-pdf">PDF</span><span class="ar-chip ar-chip-docx">DOCX</span
+              ><span class="ar-chip ar-chip-xlsx">XLSX</span><span class="ar-chip ar-chip-pptx">PPTX</span>
+              <span class="ar-kicker-text">Preprint · arXiv 2611.08219</span>
+            </p>
+            <h1 class="ar-title">
+              <img alt="Agent-R²" class="ar-wordmark" height="122" src="assets/title.png" width="460" />
+              <span class="ar-subtitle">Scaling Agents for Realistic Productivity Work via Real-Source Data Synthesis</span>
+            </h1>
+            <p class="ar-authors">
+              Teng Pan<sup>1,2</sup>, Zixuan Wang<sup>1,2</sup>, Yuchen Yan<sup>1</sup>, Qifei Wu<sup>2</sup>, Yao Chen<sup>2</sup>,
+              Yingqi Qu<sup>2</sup>, Ruiqing Zhang<sup>2</sup>, Yongliang Shen<sup>1,†</sup>
+            </p>
+            <p class="ar-affil">
+              <span><sup>1</sup>Zhejiang University</span><span><sup>2</sup>Baidu Inc.</span><span><sup>†</sup>Corresponding author</span>
+            </p>
+            <div class="ar-buttons">
+              <a class="ar-btn ar-btn-main" href="https://arxiv.org/abs/2611.08219">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v5h5M10 13h6M10 17h6" /></svg>
+                Paper
+              </a>
+              <a class="ar-btn" href="https://github.com/ZJU-REAL/Agent-R2">
+                <svg aria-hidden="true" class="ar-fill" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.83-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" /></svg>
+                Code
+              </a>
+              <a class="ar-btn" href="https://huggingface.co/teng-pan/Agent-R2-4B">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9z" /><path d="M4 7.5 12 12l8-4.5M12 12v9" /></svg>
+                Agent-R²-4B
+              </a>
+              <a class="ar-btn" href="#cite">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4z" /></svg>
+                BibTeX
+              </a>
+            </div>
+          </div>
+
+          <!-- One task instance, laid out as a document on the desk (example from paper Fig. 2) -->
+          <aside class="ar-hero-desk" aria-label="Example synthesized task instance">
+            <div class="ar-sheet ar-sheet-back" aria-hidden="true"></div>
+            <div class="ar-sheet ar-hero-sheet">
+              <p class="ar-sheet-label">task instance · x = (I, F<sub>a</sub>, F<sub>r</sub>, R)</p>
+              <p class="ar-hero-inst">
+                “…(Background)… Prepare a comprehensive legal memorandum analyzing the viability of an election contest and
+                developing a litigation strategy. …(Details)”
+              </p>
+              <p class="ar-sheet-label">attachments · real web files</p>
+              <ul class="ar-hero-files">
+                <li><span class="ar-chip ar-chip-pdf">PDF</span><span class="ar-fname">15_Recounts_and_Contests_2024_FINAL.pdf</span></li>
+                <li><span class="ar-chip ar-chip-docx">DOCX</span><span class="ar-fname">2022-DPS-Factsheets-Voting.docx</span></li>
+                <li><span class="ar-chip ar-chip-xlsx">XLSX</span><span class="ar-fname">2024_Policy_Survey_Codebook.xlsx</span></li>
+              </ul>
+              <p class="ar-sheet-label">rubric · deliverable level</p>
+              <p class="ar-hero-rubric">
+                <span class="ar-box" aria-hidden="true"></span>Correctly identifies that a recount petition is permissible because the
+                0.8% margin is within the 1% threshold specified in Virginia law
+              </p>
+              <p class="ar-hero-cap">Example instance from the paper’s pipeline figure.</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="ar-wrap">
+          <dl class="ar-stats">
+            <div class="ar-stat">
+              <dt>4k <span>from 10k</span></dt>
+              <dd>task instances distilled from web-corpus candidates</dd>
+            </div>
+            <div class="ar-stat">
+              <dt>51.0 <span>vs 48.0</span></dt>
+              <dd>GDPval Pass@1, Agent-R²-4B vs Qwen3-235B-A22B-Thinking-2507</dd>
+            </div>
+            <div class="ar-stat">
+              <dt>14.8 <span>vs 13.8</span></dt>
+              <dd>OfficeQA Pass@1 (out of domain), same comparison</dd>
+            </div>
+            <div class="ar-stat">
+              <dt>+18.6</dt>
+              <dd>GDPval Pass@1 points over the Qwen3-4B-Thinking-2507 base</dd>
+            </div>
+          </dl>
+        </div>
+      </header>
+
+      <!-- ================================ Problem ================================ -->
+      <section class="ar-section" id="problem">
+        <div class="ar-wrap">
+          <p class="ar-eyebrow">The data bottleneck</p>
+          <h2 class="ar-h2">Real work needs data that reflects real work.</h2>
+          <p class="ar-lead">
+            Productivity tasks ask an agent to follow a long-horizon professional workflow, read heterogeneous files and hand back a
+            usable deliverable. Existing training data covers these skills one at a time. The paper argues that what is missing is
+            <em>not more data but data that reflects real work: real intents, authentic files, and deliverable-level standards.</em>
+          </p>
+          <div class="ar-contrast">
+            <div class="ar-contrast-head" aria-hidden="true"><span></span><span>Usual source</span><span>Agent-R² source</span></div>
+            <div class="ar-contrast-row">
+              <span class="ar-contrast-what">Workflow</span>
+              <span class="ar-contrast-old">manually authored workflows, which do not scale</span>
+              <span class="ar-contrast-new">blueprints mined from a web corpus with occupational activity seeds (O*NET)</span>
+            </div>
+            <div class="ar-contrast-row">
+              <span class="ar-contrast-what">Files</span>
+              <span class="ar-contrast-old">LLM-generated files without real layouts, gaps or cross-file references</span>
+              <span class="ar-contrast-new">public files found on the web, verified, and kept in their original format</span>
+            </div>
+            <div class="ar-contrast-row">
+              <span class="ar-contrast-what">Success</span>
+              <span class="ar-contrast-old">“an output file exists”</span>
+              <span class="ar-contrast-new">fine-grained rubrics over evidence, analysis and deliverable quality</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ Animated method ============================ -->
+      <section class="ar-section" id="method">
+        <div class="ar-wrap ar-wrap-wide">
+          <p class="ar-eyebrow">Method</p>
+          <h2 class="ar-h2">From an occupational seed to a trained agent</h2>
+          <p class="ar-lead">
+            Three synthesis stages turn a web-corpus segment into a task with real attachments and a rubric; an expert solves it to
+            produce reference files and a trajectory; the rubric is checked and refined. The model is then trained with SFT and
+            rubric-based RL.
+          </p>
+
+          <div class="ar-fig" data-ar-fig>
+            <div class="ar-figbar">
+              <button class="ar-play" data-ar-play type="button" aria-label="Pause animation">
+                <svg aria-hidden="true" class="ar-i-pause" viewBox="0 0 16 16"><rect x="4" y="3" width="2.6" height="10" rx="1" /><rect x="9.4" y="3" width="2.6" height="10" rx="1" /></svg>
+                <svg aria-hidden="true" class="ar-i-play" viewBox="0 0 16 16"><path d="M5 3.2v9.6c0 .5.5.8.9.5l7.2-4.8c.4-.3.4-.8 0-1.1L5.9 2.7c-.4-.3-.9 0-.9.5z" /></svg>
+              </button>
+              <div class="ar-tabs" role="group" aria-label="Pipeline phase">
+                <button class="ar-tab" data-ar-phase type="button" aria-pressed="true"><b>1</b>Workflow<i></i></button>
+                <button class="ar-tab" data-ar-phase type="button" aria-pressed="false"><b>2</b>Files<i></i></button>
+                <button class="ar-tab" data-ar-phase type="button" aria-pressed="false"><b>3</b>Task<i></i></button>
+                <button class="ar-tab" data-ar-phase type="button" aria-pressed="false"><b>4</b>Refine<i></i></button>
+                <button class="ar-tab" data-ar-phase type="button" aria-pressed="false"><b>5</b>Train<i></i></button>
+              </div>
+            </div>
+
+            <div class="ar-stage" data-ar-stage>
+              <svg class="ar-wires" data-ar-wires aria-hidden="true"></svg>
+
+              <!-- ---------------- 1 · Workflow extraction ---------------- -->
+              <article class="ar-panel ar-p-workflow" data-ar-panel="workflow">
+                <header class="ar-phead">
+                  <span class="ar-pnum">01</span>
+                  <h3>Workflow extraction</h3>
+                  <span class="ar-ptag">Stage 1</span>
+                </header>
+                <div class="ar-pbody">
+                  <div class="ar-card ar-src" data-step="1">
+                    <p class="ar-card-k">Web corpus C</p>
+                    <p>DLR-Web segments (filtered from FineFineWeb); each carries discipline metadata, mapped to an occupational category.</p>
+                  </div>
+                  <div class="ar-card ar-src" data-step="2">
+                    <p class="ar-card-k">Occupational activity seeds G · O*NET</p>
+                    <ul class="ar-seeds ar-stg">
+                      <li>Examine legal data to determine advisability of defending or prosecuting law</li>
+                      <li>Evaluate findings and develop strategies in preparation for presentation of cases.</li>
+                    </ul>
+                  </div>
+                  <div class="ar-filter" data-step="3">
+                    <span class="ar-model">π<sub>syn</sub> · Qwen3.6-Plus</span>
+                    <span class="ar-pass">workflow filter</span>
+                    <span class="ar-pass">file-oriented filter</span>
+                  </div>
+                  <div class="ar-card ar-doc" data-step="4" data-ar-a="blueprint">
+                    <p class="ar-card-k">Workflow blueprint W</p>
+                    <ol class="ar-steps ar-stg">
+                      <li>Analyze legal precedents from similar contested elections to assess …</li>
+                      <li>Examine Virginia election records and certification documents …</li>
+                    </ol>
+                    <p class="ar-meta">+ information dependencies · required file types · expected outputs</p>
+                  </div>
+                </div>
+              </article>
+
+              <!-- ---------------- 2 · Attachment searching ---------------- -->
+              <article class="ar-panel ar-p-files" data-ar-panel="files">
+                <header class="ar-phead">
+                  <span class="ar-pnum">02</span>
+                  <h3>Attachment searching</h3>
+                  <span class="ar-ptag">Stage 2</span>
+                </header>
+                <div class="ar-pbody">
+                  <div class="ar-call" data-step="1" data-ar-a="query">
+                    <span class="ar-tool">web_search</span>
+                    <code>Virginia recount contest procedures filetype:pdf</code>
+                  </div>
+                  <div class="ar-card ar-result" data-step="2">
+                    <p class="ar-result-t">[PDF] Recounts and Contests - Virginia Department of Elections</p>
+                    <p class="ar-result-s">“Virginia election law does not allow a losing candidate …”</p>
+                    <p class="ar-meta ar-ok">title &amp; snippet relevant → download</p>
+                  </div>
+                  <div class="ar-inspect" data-step="3">
+                    <span class="ar-tool">bash</span><span class="ar-tool">view_image</span>
+                    <span>inspect cover page and table of contents</span>
+                    <span class="ar-rule">drop files &gt; 50 pages or &gt; 2 MB</span>
+                  </div>
+                  <ul class="ar-files ar-stg" data-step="4" data-ar-a="fc" aria-label="Retained candidate files">
+                    <li class="ar-file"><span class="ar-chip ar-chip-pdf">PDF</span><span class="ar-fname">15_Recounts_and_Contests_2024_FINAL.pdf</span></li>
+                    <li class="ar-file"><span class="ar-chip ar-chip-docx">DOCX</span><span class="ar-fname">2022-DPS-Factsheets-Voting.docx</span></li>
+                    <li class="ar-file"><span class="ar-chip ar-chip-xlsx">XLSX</span><span class="ar-fname">2024_Policy_Survey_Codebook.xlsx</span></li>
+                  </ul>
+                  <div class="ar-gate" data-step="5">
+                    <span class="ar-gate-q">Satisfy?</span>
+                    <span><b>yes</b> files jointly cover W’s information and operation needs → keep (W, F<sub>c</sub>)</span>
+                    <span class="ar-muted"><b>no</b> after max turns → discard</span>
+                  </div>
+                </div>
+              </article>
+
+              <!-- ---------------- 3 · Task synthesis ---------------- -->
+              <article class="ar-panel ar-p-task" data-ar-panel="task">
+                <header class="ar-phead">
+                  <span class="ar-pnum">03</span>
+                  <h3>Instruction &amp; rubric</h3>
+                  <span class="ar-ptag">Stage 3</span>
+                </header>
+                <div class="ar-pbody">
+                  <div class="ar-inspect" data-step="1" data-ar-a="sandbox">
+                    <span class="ar-tool">sandbox</span>
+                    <span>paginated files → page images · spreadsheets → sheet tables · originals kept</span>
+                  </div>
+                  <div class="ar-card" data-step="2">
+                    <p class="ar-card-k">Explore &amp; design · π<sub>syn</sub>, multi-turn</p>
+                    <p>Inspects files, searches and fetches web evidence when needed, and chooses the attachment set F<sub>a</sub> ⊆ F<sub>c</sub>.</p>
+                    <p class="ar-fa"><span class="ar-chip ar-chip-pdf">PDF</span><span class="ar-chip ar-chip-docx">DOCX</span><span class="ar-chip ar-chip-xlsx">XLSX</span></p>
+                  </div>
+                  <div class="ar-card ar-doc" data-step="3">
+                    <p class="ar-card-k">Instruction I</p>
+                    <p class="ar-quote">“…(Background)… Prepare a comprehensive legal memorandum analyzing the viability of an election contest and developing a litigation strategy. …(Details)”</p>
+                  </div>
+                  <div class="ar-card ar-doc" data-step="4" data-ar-a="rubric">
+                    <p class="ar-card-k">Rubric R</p>
+                    <ul class="ar-rubric ar-stg">
+                      <li><span class="ar-box" aria-hidden="true"></span>Correctly identifies that a recount petition is permissible because the 0.8% margin is within the 1% threshold specified in Virginia law</li>
+                      <li><span class="ar-box" aria-hidden="true"></span>Legal citations reference both the Virginia Code sections and the Bost case with pinpoint citations</li>
+                    </ul>
+                  </div>
+                </div>
+              </article>
+
+              <!-- ---------------- 4 · Reference & refine ---------------- -->
+              <article class="ar-panel ar-p-refine" data-ar-panel="refine">
+                <header class="ar-phead">
+                  <span class="ar-pnum">04</span>
+                  <h3>Reference &amp; refine</h3>
+                  <span class="ar-ptag">Stage 3</span>
+                </header>
+                <div class="ar-pbody">
+                  <div class="ar-card" data-step="1" data-ar-a="expert">
+                    <p class="ar-card-k">Expert π<sub>exp</sub> · Claude-Opus-4.5 solves (I, F<sub>a</sub>, R)</p>
+                    <ol class="ar-traj ar-stg">
+                      <li><span class="ar-tool">bash</span>parse the recount PDF and the codebook sheet</li>
+                      <li><span class="ar-tool">view_image</span>check rendered pages</li>
+                      <li><span class="ar-tool">web_search</span>locate the case law cited</li>
+                      <li><span class="ar-tool">web_fetch</span>read the Virginia Code section</li>
+                      <li><span class="ar-tool">bash</span>write the memorandum</li>
+                    </ol>
+                    <p class="ar-meta">trajectory τ · 18.0 steps, 41.8k tokens on average</p>
+                  </div>
+                  <div class="ar-file ar-ref" data-step="2">
+                    <span class="ar-chip ar-chip-ref">F<sub>r</sub></span><span class="ar-fname">reference deliverable · legal memorandum</span>
+                  </div>
+                  <div class="ar-card" data-step="3">
+                    <p class="ar-card-k">Verify F<sub>r</sub> against R</p>
+                    <ul class="ar-verify ar-stg">
+                      <li class="ar-y">recount threshold item</li>
+                      <li class="ar-n">pinpoint citations item</li>
+                    </ul>
+                    <p class="ar-branch">unmet and unreasonable → <b>revise the rubric</b><br />unmet but reasonable → <b>expert revises F<sub>r</sub> once</b></p>
+                  </div>
+                  <div class="ar-card ar-final" data-step="4" data-ar-a="final">
+                    <p class="ar-card-k">Final task</p>
+                    <p class="ar-final-x">(I, F<sub>a</sub>, F<sub>r</sub>, R) + verified τ</p>
+                    <p class="ar-meta">4k instances kept from 10k corpus candidates</p>
+                  </div>
+                </div>
+              </article>
+
+              <!-- ---------------- 5 · Training ---------------- -->
+              <article class="ar-panel ar-p-train" data-ar-panel="train">
+                <header class="ar-phead">
+                  <span class="ar-pnum">05</span>
+                  <h3>SFT, then rubric-based RL</h3>
+                  <span class="ar-ptag">Training</span>
+                </header>
+                <div class="ar-pbody ar-train-grid">
+                  <div class="ar-train-col">
+                    <div class="ar-card ar-sft" data-step="1" data-ar-a="sft">
+                      <p class="ar-card-k">SFT · 3k tasks</p>
+                      <p>Qwen3-4B-Thinking-2507 imitates the expert trajectories (split into per-turn samples, 2 epochs) → <b>Agent-R²-4B-SFT</b></p>
+                    </div>
+                    <div class="ar-card" data-step="2">
+                      <p class="ar-card-k">RL · 1k tasks · GRPO in the sandbox, group of 4</p>
+                      <ul class="ar-rollouts ar-stg">
+                        <li><span class="ar-pi">π</span><span class="ar-acts">a<sub>1</sub> a<sub>2</sub> … a<sub>t</sub></span><span class="ar-out">F<sub>d</sub><sup>1</sup></span></li>
+                        <li><span class="ar-pi">π</span><span class="ar-acts">a<sub>1</sub> a<sub>2</sub> … a<sub>t</sub></span><span class="ar-out">F<sub>d</sub><sup>2</sup></span></li>
+                        <li><span class="ar-pi">π</span><span class="ar-acts">a<sub>1</sub> a<sub>2</sub> … a<sub>t</sub></span><span class="ar-out ar-none">no file</span></li>
+                        <li><span class="ar-pi">π</span><span class="ar-acts">a<sub>1</sub> a<sub>2</sub> … a<sub>t</sub></span><span class="ar-out">F<sub>d</sub><sup>4</sup></span></li>
+                      </ul>
+                    </div>
+                    <div class="ar-card" data-step="3">
+                      <p class="ar-card-k">Render deliverables for the judge</p>
+                      <p class="ar-render"><span class="ar-chip ar-chip-pdf">PDF</span><span class="ar-chip ar-chip-pptx">PPTX</span><span class="ar-chip ar-chip-docx">DOCX</span> → page images</p>
+                      <p class="ar-render"><span class="ar-chip ar-chip-xlsx">XLSX</span><span>→ recalculated values + formulas (Markdown) + page images</span></p>
+                    </div>
+                  </div>
+                  <div class="ar-train-col">
+                    <div class="ar-card" data-step="4">
+                      <p class="ar-card-k">MLLM-as-a-judge · Qwen3.6-Plus</p>
+                      <p class="ar-meta">scores I + F<sub>d</sub> against rubric R and reference F<sub>r</sub></p>
+                      <ul class="ar-rewards ar-stg">
+                        <li style="--r: 0.74"><span>r<sup>1</sup></span><i></i><b>0.74</b></li>
+                        <li style="--r: 0.52"><span>r<sup>2</sup></span><i></i><b>0.52</b></li>
+                        <li style="--r: 0"><span>r<sup>3</sup></span><i></i><b>0</b></li>
+                        <li style="--r: 0.81"><span>r<sup>4</sup></span><i></i><b>0.81</b></li>
+                      </ul>
+                      <p class="ar-formula">r = Score(F<sub>d</sub>, F<sub>r</sub>, R) / max score, and r = 0 if no deliverable</p>
+                    </div>
+                    <div class="ar-card ar-update" data-step="5">
+                      <p class="ar-card-k">Policy update</p>
+                      <p class="ar-adv ar-stg"><span class="ar-plus">A<sub>1</sub> +</span><span class="ar-zero">A<sub>2</sub> ≈ 0</span><span class="ar-minus">A<sub>3</sub> −</span><span class="ar-plus">A<sub>4</sub> +</span></p>
+                      <p>Group advantages update the policy, with a KL term to the reference model. Outcome reward only, no penalty on tool-call errors → <b>Agent-R²-4B</b></p>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <p class="ar-fignote">
+              Example task from the paper’s Figure 2 (a Virginia election contest). The search query, trajectory steps, verification marks and
+              reward values are illustrative.
+            </p>
+          </div>
+
+          <details class="ar-paperfig">
+            <summary>Paper figures</summary>
+            <figure>
+              <img
+                alt="Paper Figure 2: Agent-R² data synthesis pipeline with Stage 1 Workflow Extraction, Stage 2 Attachment Searching and Stage 3 Task Synthesis."
+                height="526"
+                loading="lazy"
+                src="assets/data_synthesis_pipeline.png"
+                width="1100"
+              />
+              <figcaption>Data synthesis pipeline: workflow blueprints from web-corpus evidence, verified public attachments, and instructions, rubrics and references synthesized in the sandbox.</figcaption>
+            </figure>
+            <figure>
+              <img
+                alt="Paper Figure 3: rubric-based RL. Multi-turn rollouts produce deliverables that are rendered and scored by an MLLM judge; group advantages and KL divergence drive the policy update."
+                height="229"
+                loading="lazy"
+                src="assets/training_framework.png"
+                width="1100"
+              />
+              <figcaption>Rubric-based RL: rendered deliverables are scored by an MLLM judge against rubrics and references; the policy is updated with group advantages and KL regularization.</figcaption>
+            </figure>
+          </details>
+        </div>
+      </section>
+
+      <!-- ============================== Details ============================== -->
+      <section class="ar-section" id="details">
+        <div class="ar-wrap">
+          <p class="ar-eyebrow">Setup</p>
+          <h2 class="ar-h2">Task, environment and training recipe</h2>
+          <div class="ar-cols3">
+            <div class="ar-sheet ar-note">
+              <h3>Task</h3>
+              <p>
+                A task is <span class="ar-m">x = (I, F<sub>a</sub>, F<sub>r</sub>, R)</span>: instruction, attachments available while solving,
+                reference files used only for evaluation, and a task-specific rubric. The agent must produce the deliverable files
+                F<sub>d</sub> that I asks for.
+              </p>
+            </div>
+            <div class="ar-sheet ar-note">
+              <h3>Environment</h3>
+              <p>
+                A persistent sandbox with four general tools: <span class="ar-m">bash</span>, <span class="ar-m">web_search</span>,
+                <span class="ar-m">web_fetch</span>, <span class="ar-m">view_image</span>. Text-only solvers answer
+                <span class="ar-m">view_image</span> through an auxiliary vision model (Qwen3-VL-4B-Thinking for Agent-R² variants).
+              </p>
+            </div>
+            <div class="ar-sheet ar-note">
+              <h3>Recipe</h3>
+              <p>
+                3k tasks for SFT and 1k disjoint tasks for RL. GRPO with batch size 16, group size 4, up to 40 assistant turns,
+                65,536 max response length, temperature 1.0, learning rate 1×10<sup>−6</sup>. Final checkpoints, no benchmark-based selection.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== Results ============================== -->
+      <section class="ar-section" id="results">
+        <div class="ar-wrap">
+          <p class="ar-eyebrow">Results</p>
+          <h2 class="ar-h2">A 4B agent ahead of a 235B one</h2>
+          <p class="ar-lead">
+            GDPval is the in-domain benchmark, split by the type of deliverable it asks for: office tasks, and non-office tasks
+            (audio, video and other media). Pass@k allows up to k attempts and scores the first attempt that produces a deliverable.
+          </p>
+
+          <div class="ar-sheet ar-board" data-ar-board>
+            <div class="ar-board-head">
+              <p class="ar-board-title">GDPval · Table 1</p>
+              <div class="ar-controls">
+                <div class="ar-seg" data-ar-subset role="group" aria-label="Subset">
+                  <button type="button" data-v="office" aria-pressed="false">Office</button>
+                  <button type="button" data-v="nonoffice" aria-pressed="false">Non-Office</button>
+                  <button type="button" data-v="full" aria-pressed="true">Full</button>
+                </div>
+                <div class="ar-seg" data-ar-metric role="group" aria-label="Metric">
+                  <button type="button" data-v="1" aria-pressed="true">Pass@1</button>
+                  <button type="button" data-v="3" aria-pressed="false">Pass@3</button>
+                </div>
+              </div>
+            </div>
+            <div class="ar-rows" data-ar-rows role="table" aria-label="GDPval scores"></div>
+            <p class="ar-board-note" data-ar-note aria-live="polite"></p>
+            <details class="ar-alltable">
+              <summary>All six columns</summary>
+              <div class="ar-scroll">
+                <table class="ar-table">
+                  <thead>
+                    <tr><th rowspan="2">Model</th><th colspan="2">Office</th><th colspan="2">Non-Office</th><th colspan="2">Full</th></tr>
+                    <tr><th>P@1</th><th>P@3</th><th>P@1</th><th>P@3</th><th>P@1</th><th>P@3</th></tr>
+                  </thead>
+                  <tbody data-ar-full></tbody>
+                </table>
+              </div>
+            </details>
+          </div>
+
+          <div class="ar-sheet ar-board ar-oqa">
+            <div class="ar-board-head">
+              <p class="ar-board-title">OfficeQA · out of domain · Table 2</p>
+            </div>
+            <p class="ar-board-sub">
+              Document-grounded questions over office source files (official Markdown version). Pass@k: at least one of k attempts is correct.
+            </p>
+            <table class="ar-table ar-oqa-table">
+              <thead><tr><th>Model</th><th>Pass@1</th><th>Pass@3</th></tr></thead>
+              <tbody>
+                <tr><td>Qwen3-4B-Thinking-2507</td><td><span class="ar-cbar" style="--v: 2.2"></span>2.2</td><td>4.5</td></tr>
+                <tr><td>Qwen3-30B-A3B-Thinking-2507</td><td><span class="ar-cbar" style="--v: 2.9"></span>2.9</td><td>5.7</td></tr>
+                <tr class="ar-rival"><td>Qwen3-235B-A22B-Thinking-2507</td><td><span class="ar-cbar" style="--v: 13.8"></span>13.8</td><td>25.6</td></tr>
+                <tr><td>Agent-R²-4B-SFT</td><td><span class="ar-cbar" style="--v: 11.4"></span>11.4</td><td>21.7</td></tr>
+                <tr class="ar-ours"><td>Agent-R²-4B</td><td><span class="ar-cbar" style="--v: 14.8"></span>14.8</td><td>26.8</td></tr>
+              </tbody>
+            </table>
+            <p class="ar-board-note">Agent-R²-4B: <b>14.8</b> vs <b>13.8</b> Pass@1 and 26.8 vs 25.6 Pass@3 against Qwen3-235B-A22B-Thinking-2507; the base model scores 2.2.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== Analysis ============================== -->
+      <section class="ar-section" id="analysis">
+        <div class="ar-wrap">
+          <p class="ar-eyebrow">Analysis</p>
+          <h2 class="ar-h2">Fewer shortcuts, longer grounded exploration</h2>
+          <p class="ar-lead">
+            <em>Shortcut behavior</em>: the agent writes a plausible-looking deliverable before it has grounded, built or verified it.
+            The base model makes few tool calls and stops early; SFT teaches sustained exploration; rubric-based RL turns that into
+            reliable completion.
+          </p>
+
+          <div class="ar-cols2">
+            <div class="ar-sheet ar-board">
+              <p class="ar-board-title">Behavior on GDPval · Figure 4</p>
+              <table class="ar-table ar-num">
+                <thead><tr><th></th><th>Base</th><th>SFT</th><th>RL</th></tr></thead>
+                <tbody>
+                  <tr><td>Completion rate (%)</td><td>86.8</td><td>78.2</td><td class="ar-best">90.9</td></tr>
+                  <tr><td>Tool-call steps</td><td>6.7</td><td>39.0</td><td>33.1</td></tr>
+                  <tr><td>Tool-call errors</td><td>2.88</td><td>16.3</td><td>12.9</td></tr>
+                </tbody>
+              </table>
+              <p class="ar-board-note">SFT lengthens exploration (and its errors); RL keeps the depth, cuts errors and raises completion.</p>
+            </div>
+            <div class="ar-sheet ar-board">
+              <p class="ar-board-title">Direct evidence on shortcuts · Table 3 (%)</p>
+              <table class="ar-table ar-num">
+                <thead><tr><th></th><th>Base</th><th>SFT</th><th>RL</th></tr></thead>
+                <tbody>
+                  <tr><td>Re-checking the deliverable ↑</td><td>0.5</td><td>91.7</td><td class="ar-best">95.8</td></tr>
+                  <tr><td>Writing despite an unfixed error ↓</td><td>55.0</td><td>16.0</td><td class="ar-best">11.0</td></tr>
+                  <tr><td>Numerical-error fix rate ↑</td><td>60.7</td><td>79.6</td><td class="ar-best">85.7</td></tr>
+                  <tr><td>Deliverables with placeholder text ↓</td><td>12.5</td><td>9.6</td><td class="ar-best">5.7</td></tr>
+                  <tr><td>Traceable numbers in deliverables ↑</td><td>31.2</td><td>34.6</td><td class="ar-best">38.8</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h3 class="ar-h3">Ablations · GDPval Pass@1</h3>
+          <div class="ar-cols3">
+            <div class="ar-sheet ar-abl">
+              <p class="ar-abl-k">Real vs. synthetic files <span>SFT, 1k matched pairs</span></p>
+              <div class="ar-abl-bars">
+                <p style="--v: 41.4"><span>synthetic files</span><i></i><b>41.4</b></p>
+                <p class="ar-hi" style="--v: 43.3"><span>real files</span><i></i><b>43.3</b></p>
+              </div>
+              <p class="ar-abl-note">Expert trajectories use 2.54× more tool calls on real files (20.4 vs 8.0).</p>
+            </div>
+            <div class="ar-sheet ar-abl">
+              <p class="ar-abl-k">Rubric reward <span>RL from the same SFT model</span></p>
+              <div class="ar-abl-bars">
+                <p style="--v: 49.5"><span>w/o rubrics</span><i></i><b>49.5</b></p>
+                <p class="ar-hi" style="--v: 51.0"><span>w/ rubrics</span><i></i><b>51.0</b></p>
+              </div>
+              <p class="ar-abl-note">Fine-grained rubrics add 1.5 points over the rubric-free reward.</p>
+            </div>
+            <div class="ar-sheet ar-abl">
+              <p class="ar-abl-k">More data or RL? <span>Table 10</span></p>
+              <div class="ar-abl-bars">
+                <p style="--v: 45.5"><span>4k SFT</span><i></i><b>45.5</b></p>
+                <p class="ar-hi" style="--v: 51.0"><span>3k SFT + 1k RL</span><i></i><b>51.0</b></p>
+              </div>
+              <p class="ar-abl-note">Imitating all 4k trajectories stops at 45.5 (3k SFT: 45.3); the gain comes from RL.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================ Data ================================ -->
+      <section class="ar-section" id="data">
+        <div class="ar-wrap">
+          <p class="ar-eyebrow">Data</p>
+          <h2 class="ar-h2">What the synthesized tasks contain</h2>
+          <div class="ar-cols2">
+            <div class="ar-sheet ar-board">
+              <p class="ar-board-title">Real web-sourced attachments · Table 7</p>
+              <table class="ar-table ar-num ar-files-table">
+                <thead><tr><th>Type</th><th>Count</th><th>Avg size (MB)</th><th>Mean pages</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="ar-chip ar-chip-pdf">PDF</span></td><td>5,010</td><td>1.00</td><td>15.0</td></tr>
+                  <tr><td><span class="ar-chip ar-chip-docx">DOCX</span></td><td>3,149</td><td>0.25</td><td>13.7</td></tr>
+                  <tr><td><span class="ar-chip ar-chip-xlsx">XLSX</span></td><td>1,258</td><td>0.20</td><td>–</td></tr>
+                  <tr><td><span class="ar-chip ar-chip-pptx">PPTX</span></td><td>390</td><td>0.78</td><td>23.6</td></tr>
+                </tbody>
+              </table>
+              <p class="ar-board-note">The mix follows what is actually available on the web: more PDFs, fewer presentations.</p>
+            </div>
+            <dl class="ar-facts">
+              <div><dt>2.51</dt><dd>attachments per task on average</dd></div>
+              <div><dt>15.3</dt><dd>rubric items per task (69.6% content, 30.4% form)</dd></div>
+              <div><dt>18.0</dt><dd>steps per expert trajectory, 41.8k tokens on average</dd></div>
+              <div><dt>3k + 1k</dt><dd>tasks for SFT and for RL, with no overlap</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== Takeaways ============================== -->
+      <section class="ar-section" id="takeaways">
+        <div class="ar-wrap">
+          <p class="ar-eyebrow">Takeaways</p>
+          <ol class="ar-takeaways">
+            <li>
+              <b>Ground every stage in real sources.</b> Workflows come from web-corpus evidence and occupational seeds, files from the web,
+              and rubrics from the verified workflow-file context.
+            </li>
+            <li>
+              <b>Real files matter.</b> Matched tasks with real attachments train a better SFT model than synthetic files (43.3 vs 41.4) and
+              demand 2.54× more expert tool calls.
+            </li>
+            <li>
+              <b>Rubrics make RL count.</b> Scoring rendered deliverables against fine-grained rubrics lifts Agent-R²-4B from 45.3 (SFT) to
+              51.0 on GDPval and reduces shortcut behavior.
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ============================== Quick start ============================== -->
+      <section class="ar-section" id="start">
+        <div class="ar-wrap">
+          <p class="ar-eyebrow">Quick start</p>
+          <h2 class="ar-h2">Run the pipeline</h2>
+          <p class="ar-lead">
+            Fill URLs, keys and the proxy once in <span class="ar-m">Agent-R2/settings/settings.yaml</span>; every module reads it. See the
+            <a href="https://github.com/ZJU-REAL/Agent-R2#readme">README</a> for data placeholders and the sandbox.
+          </p>
+          <div class="ar-cols2 ar-code-grid">
+            <div class="ar-code">
+              <p class="ar-code-k">1 · Synthesize data</p>
+              <pre><code>cd Agent-R2/data_sythesis
+python run.py   # scenario → search → question → solver → refine
+python prepare_sft_data_split.py   # → data/sft.jsonl
+python prepare_rl_data.py          # → rl_data/data{N}.zip</code></pre>
+            </div>
+            <div class="ar-code">
+              <p class="ar-code-k">2 · SFT (ms-swift)</p>
+              <pre><code>cd ms-swift
+MODEL_PATH=/path/to/Qwen3-4B-Thinking-2507 bash run_qwen3.sh</code></pre>
+            </div>
+            <div class="ar-code">
+              <p class="ar-code-k">3 · Rubric-based RL (verl)</p>
+              <pre><code>cd verl
+python recipe/agent_r2/preprocess.py
+MODEL_PATH=/path/to/sft_checkpoint bash recipe/agent_r2/run_agent_r2.sh</code></pre>
+            </div>
+            <div class="ar-code">
+              <p class="ar-code-k">4 · Evaluate</p>
+              <pre><code>cd Agent-R2
+python gdpval/run.py
+python officeqa/run.py</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================ BibTeX ================================ -->
+      <section class="ar-section" id="cite">
+        <div class="ar-wrap">
+          <p class="ar-eyebrow">Citation</p>
+          <div class="ar-sheet ar-bib">
+            <div class="ar-bib-head">
+              <p class="ar-board-title">BibTeX</p>
+              <button class="ar-copy" data-ar-copy="ar-bibtex" type="button">Copy BibTeX</button>
+            </div>
+            <pre id="ar-bibtex">@article{pan2026agentr2,
+  title   = {Agent-R$^2$: Scaling Agents for Realistic Productivity Work via Real-Source Data Synthesis},
+  author  = {Pan, Teng and Wang, Zixuan and Yan, Yuchen and Wu, Qifei and Chen, Yao and Qu, Yingqi and Zhang, Ruiqing and Shen, Yongliang},
+  journal = {arXiv preprint arXiv:2611.08219},
+  year    = {2026}
+}</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="ar-footer">
+      <div class="ar-wrap ar-footer-in">
+        <span>Agent-R² · Zhejiang University &amp; Baidu Inc.</span>
+        <span>
+          <a href="https://arxiv.org/abs/2611.08219">arXiv</a> · <a href="https://github.com/ZJU-REAL/Agent-R2">GitHub</a> ·
+          <a href="https://huggingface.co/teng-pan/Agent-R2-4B">Hugging Face</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>
